@@ -1,18 +1,9 @@
 @startuml test
-class Car {
-    - make: String
-    - year: int
-    + startEngine(): void
-    + stopEngine(): void
-    + accelerate(speed: int): void
-    + brake(): void
+object Pepita {
+    energy
+    energy()
+    fly(minutes)
 }
 
-class Driver {
-    - name: String
-    - age: int
-    + drive(car: Car): void
-}
-
-Car <-- Driver
+Pepita <-- Pepita
 @enduml
