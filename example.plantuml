@@ -1,0 +1,64 @@
+@startuml example
+class Socio {
+    nombre
+    apellido
+    direccion
+    deuda
+    pagar(monto)
+    retirar(libro)
+    montoCuota()
+}
+
+class SocioVitalicio {
+    montoCuota()
+}
+
+class SocioComun {
+    montoCuota()
+}
+
+class SocioEspecial {
+    montoCuota()
+}
+
+class Prestamo {
+    pendiente()
+}
+
+'HERENCIA'
+Socio <|-- SocioVitalicio
+Socio <|-- SocioComun 
+Socio <|-- SocioEspecial  
+
+'CONOCE (ASOCIACIÓN)'
+Socio "1" -right-> "0..*" Prestamo : retiró
+
+class Libro {
+}
+
+interface CriterioPrestamo {
+    diasPrestamo(socio)
+}
+
+class Clasico {
+    diasPrestamo(socio)
+}
+
+class Normal {
+    diasPrestamo(socio)
+}
+'IMPLEMENTA INTERFAZ (REALIZACIÓN)'
+Libro -left-> "1" CriterioPrestamo
+
+'CLASE REFERENCIADA POR LA VARIABLE INTERFAZ'
+Clasico .up.|> CriterioPrestamo
+Normal .up.|> CriterioPrestamo
+
+class ComparadorLibro {
+    comparar(libro, libro)
+}
+'USA (DEPENDENCIA)'
+ComparadorLibro ..> Libro
+
+'ASOCIACIÓN >> DEPENDENCIA'
+@enduml

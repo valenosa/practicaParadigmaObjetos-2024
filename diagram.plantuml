@@ -1,9 +1,0 @@
-@startuml test
-object Pepita {
-    energy
-    energy()
-    fly(minutes)
-}
-
-Pepita <-- Pepita
-@enduml
