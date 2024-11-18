@@ -1,9 +1,9 @@
-import example.pepita
+import example.*
 
-describe "group of tests for pepita" {
+describe "Tests para los productos" {
 
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
+  test "Los productos tienen precio" {
+    const producto = new Producto()
+    assert.equals(0, producto.precio())
   }
-
 }

@@ -1,64 +1,41 @@
 @startuml example
-class Socio {
-    nombre
-    apellido
-    direccion
-    deuda
-    pagar(monto)
-    retirar(libro)
-    montoCuota()
+interface condicionIVA {
+    impuesto(monto)
 }
 
-class SocioVitalicio {
-    montoCuota()
+class ConsumidorFinal {
+    impuesto(monto)
 }
 
-class SocioComun {
-    montoCuota()
+class ResponsableInscripto {
+    impuesto(monto)
 }
 
-class SocioEspecial {
-    montoCuota()
+class ResponsableNoInscripto {
+    impuesto(monto)
 }
 
-class Prestamo {
-    pendiente()
+class Cliente{
+    saldo
+    comprar(producto)
 }
 
-'HERENCIA'
-Socio <|-- SocioVitalicio
-Socio <|-- SocioComun 
-Socio <|-- SocioEspecial  
+Cliente -left-> "1" condicionIVA
 
-'CONOCE (ASOCIACIÓN)'
-Socio "1" -right-> "0..*" Prestamo : retiró
+ConsumidorFinal .up.|> condicionIVA
+ResponsableInscripto .up.|> condicionIVA
+ResponsableNoInscripto .up.|> condicionIVA
 
-class Libro {
+class Producto {
+    precio()
 }
 
-interface CriterioPrestamo {
-    diasPrestamo(socio)
+Cliente .down.> Producto
+
+class ProductoEspecial {
+    precio()
 }
 
-class Clasico {
-    diasPrestamo(socio)
-}
+Producto <|-- ProductoEspecial
 
-class Normal {
-    diasPrestamo(socio)
-}
-'IMPLEMENTA INTERFAZ (REALIZACIÓN)'
-Libro -left-> "1" CriterioPrestamo
-
-'CLASE REFERENCIADA POR LA VARIABLE INTERFAZ'
-Clasico .up.|> CriterioPrestamo
-Normal .up.|> CriterioPrestamo
-
-class ComparadorLibro {
-    comparar(libro, libro)
-}
-'USA (DEPENDENCIA)'
-ComparadorLibro ..> Libro
-
-'ASOCIACIÓN >> DEPENDENCIA'
 @enduml
