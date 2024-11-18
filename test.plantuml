@@ -1,0 +1,18 @@
+@startuml test
+class Car {
+    - make: String
+    - year: int
+    + startEngine(): void
+    + stopEngine(): void
+    + accelerate(speed: int): void
+    + brake(): void
+}
+
+class Driver {
+    - name: String
+    - age: int
+    + drive(car: Car): void
+}
+
+Car <-- Driver
+@enduml
