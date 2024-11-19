@@ -1,0 +1,23 @@
+import miguelito.*
+
+describe "Tests platos" {
+
+  test "Parrillada es especial" {
+  }
+
+  test "Parrillada no es especial"{
+  }
+}
+
+describe "Test comenzales"{
+  test "Comenzal se da un gusto"{
+  }
+
+  test "Comenzal no puede darse un gusto"{
+
+  }
+
+  test "Comenzal cambia de habito y puede darse un gusto"{
+
+  }
+}

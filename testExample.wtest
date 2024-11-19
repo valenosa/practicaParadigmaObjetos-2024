@@ -1,9 +1,0 @@
-import example.*
-
-describe "Tests para los productos" {
-
-  test "Los productos tienen precio" {
-    const producto = new Producto()
-    assert.equals(0, producto.precio())
-  }
-}
