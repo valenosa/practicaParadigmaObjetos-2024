@@ -1,0 +1,142 @@
+@startuml miguelito
+interface pan {
+    peso()
+    aptoCeliacos()
+}
+
+object industrial {
+    peso()
+    aptoCeliacos()
+}
+
+object casero {
+    peso()
+    aptoCeliacos()
+}
+
+object maiz {
+    peso()
+    aptoCeliacos()
+}
+
+industrial .up.|> pan
+casero .up.|> pan
+maiz .up.|> pan
+
+abstract class Plato{
+    peso()
+    aptoCeliaco()
+    valoracion()
+    esEspecial()
+    precio()
+}
+
+class Hamburguesa{
+    peso()
+    aptoCeliaco()
+    valoracion()
+}
+
+Hamburguesa -up-|> Plato
+Hamburguesa -left-> "1" pan
+
+class Provoleta{
+    peso()
+    aptoCeliaco()
+    valoracion()
+    esEspecial()
+} 
+
+Provoleta --|> Plato
+
+class HamburguesaDoble{
+    peso()
+    esEspecial()
+}
+
+HamburguesaDoble -up-|> Hamburguesa
+
+class CorteCarne{
+    peso()
+    aptoCeliaco()
+    valoracion()
+    esEspecial()
+}
+
+CorteCarne --|> Plato
+
+class Parrillada{
+    platos[]
+    peso()
+    aptoCeliaco()
+    valoracion()
+    esEspecial()
+}
+
+Parrillada --|> Plato
+Parrillada --> "1..*"Plato
+
+class Comensal{
+    dinero
+    darGusto()
+    cobrar(plato)
+    pagar(plata)
+    tieneProblemasGastricos()
+    seCambiaALaUADE()
+    empobrecer()
+}
+
+interface tipo{
+    leAgrada(comida)
+    esFinuli()
+}
+
+object celiaco{
+    leAgrada(comida)
+    esFinuli()
+}
+
+object finuli{
+    leAgrada(comida)
+    esFinuli()
+}
+
+object cuatroXcuatro{
+    leAgrada(comida)
+    esFinuli()
+}
+
+'Recibe plato en cobrar(plato) y en la leAgrada(comida)'
+Comensal .left.> Plato 
+
+Comensal --> "1" tipo
+
+celiaco ..|> tipo
+finuli ..|> tipo
+cuatroXcuatro ..|> tipo
+
+object parrillaMiguelito{
+    platos#{}
+    comensales#{}
+    ingresos
+    esElMasCaro(plato)
+    vender(plato, comensal)
+    hacerPromocion(dinero)
+}
+
+parrillaMiguelito --> "*" Plato
+'El comensal tiene la referencia a la parrilla y la usa'
+parrillaMiguelito "1" <--> "*" Comensal
+
+'No pongo porque gana la asociación
+'parrillaMiguelito ..> "*" Plato
+'parrillaMiguelito ..> "*" Comensal
+
+object gobierno{
+    ciudadanos#{}
+    decision()
+}
+
+gobierno --> "*" Comensal
+
+@enduml
