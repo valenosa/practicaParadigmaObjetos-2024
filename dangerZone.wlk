@@ -3,15 +3,16 @@ class Empleado{
 
     const habilidades = #{}
 
-    const empleados = #{}
-
-    var salud = 75
+    var salud = 100
 
     method estaIncapacitado() = salud < tipoEmpleado.saludCritica()
 
-    method puedeUsar(habilidad) = (!self.estaIncapacitado() && habilidades.contains(habilidad)) || self.empleadoPuedeUsar(habilidad)
+    method puedeUsar(habilidad) = (!self.estaIncapacitado() && self.poseeHabilidad(habilidad))
 
-    method empleadoPuedeUsar(habilidad) = empleados.any({empleado => empleado.puedeUsar(habilidad)})
+    method poseeHabilidad(habilidad) = habilidades.contains(habilidad)
+
+
+    
 
     method unirseA(equipo){//?
         equipo.agregarIntegrante(self)
@@ -28,10 +29,10 @@ class Empleado{
 
     }
 
-    method recompensar(nuevasHabilidades){
+    method finalizarMision(nuevasHabilidades){
         if (salud > 0)
         {
-        tipoEmpleado.recompensar(self, nuevasHabilidades)
+        tipoEmpleado.completarMision(self, nuevasHabilidades)
         }
     }
 
@@ -45,10 +46,18 @@ class Empleado{
 
 }
 
+class Jefe inherits Empleado{
+    const empleados = #{}
+
+    override method puedeUsar(habilidad) = super(habilidad) || self.empleadoPuedeUsar(habilidad)
+
+    method empleadoPuedeUsar(habilidad) = empleados.any({empleado => empleado.puedeUsar(habilidad)})
+}
+
 object espia{
     method saludCritica() = 15
 
-    method recompensar(empleado, nuevasHabilidades){
+    method completarMision(empleado, nuevasHabilidades){
         empleado.aprender(nuevasHabilidades)
     }
 }
@@ -58,11 +67,11 @@ class Oficinista{
 
     method saludCritica() = 40 - 5 * estrellas
 
-    method recompensar(empleado, _){
+    method completarMision(empleado, _){
         estrellas += 1
 
         if(estrellas >= 3){
-            empleado.promover()
+            empleado.promover() //poría directamente modificar el puesto desde acá porque el puesto ES parte del Empleado (está acoplado)
         }
     }
 }
@@ -80,8 +89,8 @@ class Equipo{
         integrantes.forEach({integrante => integrante.daniar(danio / 3)})
     }
 
-    method recompensar(nuevasHabilidades){
-    integrantes.forEach({integrante => integrante.recompensar(nuevasHabilidades)})
+    method finalizarMision(nuevasHabilidades){
+    integrantes.forEach({integrante => integrante.finalizarMision(nuevasHabilidades)})
     }
 
     method agregarIntegrante(integrante){
@@ -94,17 +103,17 @@ class Mision{
 
     const peligrosidad = 30
 
-    method cumplir(participante){
-        if (habilidadesNecesarias.all({habilidad => participante.puedeUsar(habilidad)})){
-            participante.daniar(self.danio())
-            participante.recompensar(habilidadesNecesarias) //completan la mision
-        }
-        else {
+    method cumplir(asignado){
+        if (! self.reuneHabilidades(asignado)){
             throw new DomainException(message = "No se pudo cumplir la misión")
         }
+            asignado.daniar(self.danio())
+            asignado.finalizarMision(habilidadesNecesarias) //finalizan la mision
     }
 
-    method danio() = peligrosidad //Se entiende que la intención del enunciado es que se pierda la cantidad de vida equivalente a la peligrosidad, pero se delega para que en caso de ser necesario se pueda modificar facilmente
+    method reuneHabilidades(asignado) = habilidadesNecesarias.all({habilidad => asignado.puedeUsar(habilidad)})
+
+    method danio() = peligrosidad //Se delega porque no queda claro como se calcula el danio total, solo se sabe que si es un solo individuo sufre todo el danio total y si es un equipo sufren 1/3 del danio total (funionalidad delegada al equipo). Se implementa que el anio total sea la peligrosidad, pero al estar delegado se puede modificar facilmente
 }
 
 const jacinto = new Empleado(tipoEmpleado = espia, habilidades = #{"a", "b", "c"})
